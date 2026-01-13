@@ -1,40 +1,46 @@
-// #include<iostream>
-// #include <cstring>
-// #include<iomanip>
-// #define MAX 50
-// #define sp setw(8)
-// using namespace std;
+#include<iostream>
+#include<vector>
+#include<iomanip>
+#define sp setw(5)
+using namespace std;
+int main(){
+    cout<<"no. of blocks\n";
+    int n;cin>>n;
+    cout<<"no. of processes\n";
+    int m;cin>>m;
 
-// int v[MAX];
-// int p[MAX];
-// int alloc[MAX];
-// int avail[MAX];
+    vector<int> v(n);
+    for(int i=0;i<n;i++) cin>>v[i];
+    vector<int> p(m);
+    for(int i=0;i<m;i++) cin>>p[i];
 
-// int main(){
-//     memset(alloc,-1,sizeof(alloc));
-
-//     cout<<"enter no. of blocks\n";
-//     int n;cin>>n;
-//     for(int i=0;i<n;i++) cin>>v[i];
-//     cout<<"enter no. of processes\n";
-//     int m;cin>>m;
-//     for(int i=0;i<m;i++) cin>>p[i];
-    
-//     for(int i=0;i<m;i++){
-//         for(int j=0;j<n;j++){
-//             if(p[i]<=v[j]){
-//                 alloc[i]=j;
-//                 v[j]-=p[i];
-//                 avail[j]=v[j];
-//             }
-//         }
-//     }
-
-//     for(int i=0;i<n;i++){
-//         cout<<"Block"<<i+1<<sp<<alloc[i]<<"-"<<
-//     }
-
+    vector<int> ans[n];
     
 
+    vector<int> notalloc;
+    //first fit
+    for(int i=0;i<m;i++){
+        int f=0;
+        for(int j=0;j<n;j++){
+            if(v[j]>=p[i]){
+                v[j]-=p[i];
+                ans[j].push_back(i);
+                f=1;
+                break;
+            }
+        }
+        if(!f) notalloc.push_back(i);
+    }
 
-// }
+    //output
+    for(int i=0;i<n;i++){
+        cout<<"block"<<i<<sp;
+        for(auto x:ans[i]) cout<<x<<' ';
+        cout<<sp<<sp;
+        cout<<v[i]<<'\n';
+    }
+    cout<<'\n';
+    cout<<"not allocated processes\n";
+    for(auto x:notalloc) cout<<x<<' ';
+
+}
